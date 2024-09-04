@@ -1,0 +1,7 @@
+flask
+geopy
+pymongo
+scikit-learn
+pandas
+numpy
+faiss-cpu

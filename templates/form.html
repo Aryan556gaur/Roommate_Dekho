@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Roommate Dekho - Select Location</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzebYcQ3jfQMK8ZRP7L_IVsvTyJF0Kri4&callback=initMap" async defer></script>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+        margin-top: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+      }
+      label {
+        font-weight: bold;
+      }
+      input[type="submit"] {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="/predict" method="POST">
+      <div class="form-group">
+        <label for="Name">Name:</label>
+        <input type="text" id="Name" name="Name" placeholder="Enter Name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="Budget">Budget:</label>
+        <input type="text" id="Budget" name="Budget" placeholder="Enter Budget value (float)" required>
+      </div>
+
+      <div class="form-group">  
+        <label for="Hobbies">Hobbies:</label>
+        <input type="text" id="Hobbies" name="Hobbies" placeholder="Enter Hobbies" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="Is_Vegetarian">Is Vegetarian:</label>
+        <select id="Is_Vegetarian" name="Is_Vegetarian" required>
+          <option value="True">True</option>
+          <option value="False">False</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" placeholder="Click on the map to select a location" readonly required>
+      </div>
+
+      <!-- Hidden fields to store latitude and longitude -->
+      <input type="hidden" id="latitude" name="latitude">
+      <input type="hidden" id="longitude" name="longitude">
+
+      <div id="map"></div>
+
+      <input type="submit" value="Submit">
+    </form>
+
+    <script>
+      let map;
+      let marker;
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 28.6139, lng: 77.2090 }, // Default to New Delhi
+          zoom: 12,
+        });
+
+        map.addListener("click", (e) => {
+          placeMarkerAndPanTo(e.latLng, map);
+        });
+      }
+
+      function placeMarkerAndPanTo(latLng, map) {
+        if (marker) {
+          marker.setPosition(latLng);
+        } else {
+          marker = new google.maps.Marker({
+            position: latLng,
+            map: map,
+          });
+        }
+        map.panTo(latLng);
+
+        // Store the selected latitude and longitude in hidden input fields
+        document.getElementById("latitude").value = latLng.lat();
+        document.getElementById("longitude").value = latLng.lng();
+
+        // Update the location input field with the selected coordinates
+        document.getElementById("location").value = `Lat: ${latLng.lat()}, Lng: ${latLng.lng()}`;
+      }
+    </script>
+  </body>
+</html>
