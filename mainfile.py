@@ -1,7 +1,8 @@
 from flask import Flask,request,render_template,send_file, jsonify
 from inserter import mongo_retriever
-from main import nearby_people
+# from main import nearby_people
 from matching import model
+from nearloc import nnear
 
 application=Flask(__name__)
 
@@ -30,11 +31,11 @@ def predict_datapoint():
         number = collection.count_documents({}) +1
         user_number = 'user'+ str(number)
         collection.insert_one({'user': user_number, 'Name': Name, 'location': (location), 'Budget': Budget, 'Hobbies': Hobbies, 'Is_Vegetarian': Is_Vegetarian})
-        loc = nearby_people() 
+        near = nnear()
         collection.drop_indexes()
         cursor = collection.find({}, {'_id': 0})
-
-        nearby_users = loc.find_nearby_users(cursor=cursor, current_user_id=user_number, current_location=location, max_distance=10000)
+        dataB = list(cursor)
+        nearby_users = near.find_nearest_by_location(dataB, user_number)
 
         ml = model()
         result = ml.fit_it(user_number, nearby=nearby_users)

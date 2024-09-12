@@ -10,7 +10,7 @@ class nearby_people:
     def find_nearby_users(self, cursor, current_user_id, current_location, max_distance):
         # Convert Cursor to a list of dictionaries
         user_list = list(cursor)
-    
+
         nearby_users = []
 
         for user_info in user_list:
