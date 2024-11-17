@@ -18,15 +18,19 @@ class model:
                 neighbors.append({
                     'user': neighbor['user'],
                     'Name': neighbor['Name'],
-                    'Distance': dist
+                    'Similarity': dist,
+                    'Distance': neighbor['Distance'],
+                    'location': neighbor['location'],
+                    'mobile': neighbor['mobile'],
                 })
         return neighbors
         
     def fit_it(self, selected_user_id, nearby):
         df1 = pd.DataFrame(nearby)
+        print(df1.head())
 
         scaler = StandardScaler()
-        df1.drop('Distance',axis=1,inplace=True)
+        # df1.drop('Distance',axis=1,inplace=True)
 
         df1['Budget'] = scaler.fit_transform(np.reshape(df1['Budget'],(-1, 1)))
 
@@ -52,6 +56,6 @@ class model:
 
         s=[]
         for neighbor in nearest_neighbors:
-            s.append(f"User: {neighbor['Name']}, Similarity Score:{1 - (neighbor['Distance'])/10:.2f}")
+            s.append(f"User: {neighbor['Name']}, Distance from you: {neighbor['Distance']},loaction: {neighbor['location']}, Contact Info: {neighbor['mobile']}, Matching: {int((1 - neighbor['Similarity']/10)*100)}%")
         
         return s

@@ -25,12 +25,13 @@ def predict_datapoint():
         Budget= float(request.form.get('Budget'))
         Hobbies = request.form.get('Hobbies')
         Is_Vegetarian = request.form.get('Is_Vegetarian')
+        mobile = float(request.form.get('mobile'))
     
         mret = mongo_retriever()
         collection = mret.mongo_setup()
         number = collection.count_documents({}) +1
         user_number = 'user'+ str(number)
-        collection.insert_one({'user': user_number, 'Name': Name, 'location': (location), 'Budget': Budget, 'Hobbies': Hobbies, 'Is_Vegetarian': Is_Vegetarian})
+        collection.insert_one({'user': user_number, 'Name': Name, 'location': (location), 'Budget': Budget, 'Hobbies': Hobbies, 'Is_Vegetarian': Is_Vegetarian, 'mobile': mobile})
         near = nnear()
         collection.drop_indexes()
         cursor = collection.find({}, {'_id': 0})

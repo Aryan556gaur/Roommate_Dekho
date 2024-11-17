@@ -23,6 +23,8 @@ class nnear:
                 'Name': neighbor['Name'],
                 'Distance': np.linalg.norm(user_location - location_vectors[idx]),
                 'Hobbies': neighbor['Hobbies'], 
-                'Budget': neighbor['Budget'], 
-                'Is_Vegetarian': neighbor['Is_Vegetarian']})
+                'Budget': neighbor['Budget'],
+                'location': neighbor['location'], 
+                'Is_Vegetarian': neighbor['Is_Vegetarian'],
+                'mobile': neighbor['mobile']})
         return neighbors
