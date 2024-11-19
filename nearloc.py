@@ -26,5 +26,7 @@ class nnear:
                 'Budget': neighbor['Budget'],
                 'location': neighbor['location'], 
                 'Is_Vegetarian': neighbor['Is_Vegetarian'],
-                'mobile': neighbor['mobile']})
+                'mobile': neighbor['mobile'],
+                'image': neighbor['image']})
+            
         return neighbors

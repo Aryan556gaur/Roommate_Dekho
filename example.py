@@ -1,5 +1,6 @@
 from geopy.distance import geodesic
 from inserter import mongo_retriever
+from geopy.geocoders import Nominatim
 
 class nearby_people:
     def __init__(self) -> None:
@@ -8,19 +9,27 @@ class nearby_people:
     def calculate_distance(self, loc1, loc2):
         return geodesic(loc1, loc2).kilometers
 
-    def find_nearby_users(self, cursor, current_user_id, current_location, max_distance):
-        # Convert Cursor to a list of dictionaries
-        user_list = list(cursor)
 
-        nearby_users = []
 
-        for user_info in user_list:
-            id = list(user_info.values())[0]
-            distance = self.calculate_distance(current_location, user_info['location'])
-            if distance <= max_distance:
-                nearby_users.append({'user': id, 'Name': user_info['Name'], 'Distance': distance, 'Hobbies': user_info['Hobbies'], 'Budget': user_info['Budget'], 'Is_Vegetarian': user_info['Is_Vegetarian']})
+    def get_address_from_coordinates(self, latitude, longitude):
+        # Initialize the geolocator
+        geolocator = Nominatim(user_agent="geoapi")
+        
+        # Get the location
+        location = geolocator.reverse((latitude, longitude), exactly_one=True)
+        
+        # Return the address
+        if location and location.address:
+            return location.address
+        else:
+            return "Address not found"
 
-        return nearby_users
+# Example usage
+# latitude = 37.7749
+# longitude = -122.4194
+# address = get_address_from_coordinates(latitude, longitude)
+# print(f"Address: {address}")
+
 # data = [
 #     {'user': 'user2', 'Name': 'Bob', 'location': [34.0522, -118.2437], 'Budget': 2000.0, 'Hobbies': 'reading,music', 'Is_Vegetarian': False, 'mobile': 984983247},
 #     {'user': 'user3', 'Name': 'Charlie', 'location': [40.7128, -74.0060], 'Budget': 4000.0, 'Hobbies': 'reading,music', 'mobile': 7236572365},

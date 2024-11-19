@@ -5,6 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.feature_extraction.text import TfidfVectorizer
 import faiss
 import numpy as np
+from example import nearby_people
 
 class model:
     def find_nearest_neighbors(self, user_id, df1, feature_vectors, index,k=3):
@@ -12,16 +13,19 @@ class model:
         user_vector = feature_vectors[user_idx].reshape(1, -1)
         distances, indices = index.search(user_vector, k+1)
         neighbors = []
+        loc_obj = nearby_people()
         for dist, idx in zip(distances[0][1:], indices[0][1:]):
             neighbor = df1.iloc[idx]
             if dist < 10:
+                address = loc_obj.get_address_from_coordinates(neighbor['location'][0], neighbor['location'][1])
                 neighbors.append({
                     'user': neighbor['user'],
                     'Name': neighbor['Name'],
                     'Similarity': dist,
                     'Distance': neighbor['Distance'],
-                    'location': neighbor['location'],
+                    'location': address,
                     'mobile': neighbor['mobile'],
+                    'image': neighbor['image']
                 })
         return neighbors
         
@@ -56,6 +60,13 @@ class model:
 
         s=[]
         for neighbor in nearest_neighbors:
-            s.append(f"User: {neighbor['Name']}, Distance from you: {neighbor['Distance']},loaction: {neighbor['location']}, Contact Info: {neighbor['mobile']}, Matching: {int((1 - neighbor['Similarity']/10)*100)}%")
+            s.append({
+                'Name': neighbor['Name'],
+                'Distance': neighbor['Distance'],
+                'Location': neighbor['location'],
+                'Contact_Info': neighbor['mobile'],
+                'Matching': f"{int((1 - neighbor['Similarity'] / 10) * 100)}%",
+                'image': neighbor['image']
+            })
         
         return s
