@@ -6,6 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import faiss
 import numpy as np
 from example import nearby_people
+from PIL import Image
 
 class model:
     def find_nearest_neighbors(self, user_id, df1, feature_vectors, index,k=3):

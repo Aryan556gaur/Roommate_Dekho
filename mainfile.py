@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 application=Flask(__name__)
 app=application
 
-UPLOAD_FOLDER = 'uploads/'
+UPLOAD_FOLDER = 'images'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -21,12 +21,14 @@ def allowed_file(filename):
 def ab():
     return 'welcome to roomy'
 
+
 @app.route('/predict',methods=['GET','POST'])
 def predict_datapoint():
     if request.method=='GET':
         return render_template('form.html')
-    
+
     else:
+
         Name= request.form.get('Name')
         latitude = request.form.get('latitude')
         longitude = request.form.get('longitude')
@@ -36,17 +38,21 @@ def predict_datapoint():
         Is_Vegetarian = request.form.get('Is_Vegetarian')
         mobile = int(request.form.get('mobile'))
 
+
         if 'image' in request.files:
             image = request.files['image']
             if image and allowed_file(image.filename):
                 filename = secure_filename(image.filename)
                 image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                print("Filename:", filename)
+                print("Image Path:", image_path)
                 image.save(image_path)
             else:
                 image_path = None
         else:
             image_path = None
 
+        print(filename)
         mret = mongo_retriever()
         collection = mret.mongo_setup()
         number = collection.count_documents({}) +1
