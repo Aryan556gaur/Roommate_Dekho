@@ -77,71 +77,72 @@ Roommate_Dekho/
    ```bash
    git clone https://github.com/Aryan556gaur/Roommate_Dekho.git
    cd Roommate_Dekho
-   
+
+---
+
 Create & Activate Virtual Env
 
 python3 -m venv venv
 source venv/bin/activate      # Linux/macOS
 venv\Scripts\activate.bat     # Windows
+
 Install Dependencies
-
 pip install -r requirements.txt
-Configure Your MongoDB URI
 
+Configure Your MongoDB URI
 Edit the uri in inserter.py (or better—use environment variables!).
 
 Create Upload Folder
-
 mkdir images
+
 🚀 Running the App
-
 python mainfile.py
-Home: GET / → “welcome to roomy”
 
-Form: GET /predict → fill your profile (name, lat/long, budget, hobbies, veg-flag, mobile, photo)
+---
 
-Match: POST /predict → returns a ranked list of 3 best roommate matches, complete with:
+- Home: GET / → “welcome to roomy”
+- Form: GET /predict → fill your profile (name, lat/long, budget, hobbies, veg-flag, mobile, photo)
+- Match: POST /predict → returns a ranked list of 3 best roommate matches, complete with:
 
 🏠 Distance
-
 💬 Matching score (%)
-
 📍 Full address
-
 ☎️ Contact info
-
 🖼️ Profile image
 
-📊 How It Works
+---
 
-User Insertion
+## 📊 How It Works
+
+**User Insertion**
 New user data is saved to MongoDB, including profile image path.
 
-Nearby Filter
+**Nearby Filter**
 nearloc.find_nearest_by_location() uses KDTree to filter everyone within 10 km.
 
-Cosine-Style Similarity
+**Cosine-Style Similarity**
 
-Budget is scaled.
+**Budget is scaled.**
 
-Hobbies → TF-IDF vectors.
+**Hobbies → TF-IDF vectors.**
 
-All features + veg-flag → FAISS L2 index.
+**All features + veg-flag → FAISS L2 index.**
 
-Final Ranking
+**Final Ranking**
 
-matching.model.find_nearest_neighbors() returns top 4 (drops the query itself), applies a max-distance threshold, reverse-geocodes their lat/long, and builds the final result set.
+**matching.model.find_nearest_neighbors() returns top 4 (drops the query itself), applies a max-distance threshold, reverse-geocodes their lat/long, and builds the final result set.**
 
-🛣️ Roadmap & Future Enhancements
+---
+
+# 🛣️ Roadmap & Future Enhancements
+
 🔄 Real-time Chat between matched roommates
-
 🌐 Dockerization for one-click deploy
-
 📱 React/Vue Frontend for an interactive single-page experience
-
 🔔 Push Notifications for new matches
-
 🧪 Unit & Integration Tests for rock-solid reliability
+
+---
 
 🤝 Contributing
 Fork
@@ -153,6 +154,8 @@ Commit: git commit -m "✨ Add Your Feature"
 Push: git push origin feature/YourFeature
 
 PR: Open a Pull Request & let’s collaborate!
+
+---
 
 📄 License
 Distributed under the MIT License. See LICENSE for details.
