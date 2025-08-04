@@ -46,6 +46,8 @@ Roommate_Dekho is your one-stop Flask application that helps you discover and co
 
 ## 📁 Project Structure
 
+```
+
 Roommate_Dekho/
 ├─ images/ # Uploaded profile images
 ├─ templates/
@@ -59,7 +61,7 @@ Roommate_Dekho/
 ├─ mainfile.py # Flask app: endpoints & flow
 ├─ requirements.txt # pip install -r
 └─ .gitignore
-
+```
 
 ---
 
