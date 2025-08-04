@@ -1,6 +1,6 @@
 # Roommate_Dekho
-
 **Find. Match. Thrive.**  
+
 Roommate_Dekho is your one-stop Flask application that helps you discover and connect with ideal roommates based on **location**, **budget**, **lifestyle**, and **interests**—all powered by MongoDB, geospatial lookup, FAISS similarity, and TF-IDF matching.
 
 ---
